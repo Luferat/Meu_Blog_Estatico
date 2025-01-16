@@ -9,6 +9,8 @@
     --fonte-padrao: sans-serif;
     --tamanho-da-fonte: 16px;
     --cor-do-fundo: #ddd;
+    --cor-link-padrao: steelblue;
+    --cor-link-hover: orangered;
 }
 
 /* Reset básico */
@@ -27,8 +29,31 @@ body,
     padding: 0;
     margin: 0;
     font-family: var(--fonte-padrao);
+    /* Tamanho padrão da fonte da página ↨ 1rem */
     font-size: var(--tamanho-da-fonte);
 }
+
+/* Reset dos links */
+
+a {
+    color: var(--cor-link-padrao);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--cor-link-hover);
+}
+
+/* Reset dos campos de formulário */
+
+form input,
+form button {
+    font-family: inherit;
+    font-size: inherit;
+    padding: .35rem .5rem;
+}
+
+/* Fundo da página */
 
 body {
     background: var(--cor-do-fundo);
@@ -41,4 +66,100 @@ body {
 
 main {
     flex-grow: 1;
+}
+
+/* Cabeçalho → <header> */
+
+header {
+    background-color: rgb(255, 255, 255);
+}
+
+header img {
+    display: block;
+    /* 4 * 16 = 64 pixels */
+    height: 4rem;
+    width: auto;
+    margin: .5rem 1rem .5rem .5rem;
+}
+
+header div {
+    display: flex;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: #000;
+}
+
+header form {
+    background-color: #000;
+    padding: 1rem;
+    display: flex;
+}
+
+header form input {
+    flex-grow: 1;
+    border: none;
+    border-radius: .3rem 0 0 .3rem;
+}
+
+header form button {
+    border: none;
+    border-radius: 0 .3rem .3rem 0;
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+/* Menu principal → <nav> */
+
+nav {
+    background-color: orange;
+    display: flex;
+    border-top: 2px solid orange;
+    border-bottom: 2px solid orange;
+    justify-content: flex-end;
+}
+
+nav img {
+    height: 2rem;
+    width: 2rem;
+}
+
+nav i {
+    font-size: 2rem;
+}
+
+nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    color: #000;
+}
+
+nav a:hover {
+    color: orange;
+    background-color: #000;
+}
+
+nav a:first-child {
+    margin-right: auto;
+}
+
+nav span {
+    margin-top: .5rem;
+}
+
+/* Conteudo central → <main> */
+
+main {
+    background-color: #fff;
+}
+
+
+/* Rodapé → <footer> */
+footer {
+    background-color: #000;
 }
