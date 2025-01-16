@@ -59,24 +59,26 @@ body {
     background: var(--cor-do-fundo);
 }
 
+/* Estrutura da página */
+
 #wrap {
     display: flex;
     flex-direction: column;
-}
-
-main {
-    flex-grow: 1;
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
 }
 
 /* Cabeçalho → <header> */
 
 header {
     background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
 }
 
 header img {
     display: block;
-    /* 4 * 16 = 64 pixels */
     height: 4rem;
     width: auto;
     margin: .5rem 1rem .5rem .5rem;
@@ -117,8 +119,7 @@ header form button {
 nav {
     background-color: orange;
     display: flex;
-    border-top: 2px solid orange;
-    border-bottom: 2px solid orange;
+    border: 2px solid orange;
     justify-content: flex-end;
 }
 
@@ -135,7 +136,7 @@ nav a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    padding: .5rem;
     color: #000;
 }
 
@@ -155,11 +156,76 @@ nav span {
 /* Conteudo central → <main> */
 
 main {
+    flex-grow: 1;
     background-color: #fff;
+    padding: 0 1rem;
+    line-height: 1.3;
+    border-top: 1px solid #000;
 }
 
-
 /* Rodapé → <footer> */
+
 footer {
     background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+}
+
+footer a {
+    color: rgb(139, 193, 237);
+}
+
+footer a:hover {
+    color: #ffa500;
+}
+
+footer>a {
+    font-size: 1.8rem;
+    padding: .5rem;
+}
+
+footer>div {
+    font-size: small;
+    text-align: center;
+}
+
+footer>div div {
+    margin-top: .35rem;
+}
+
+@media screen and (min-width: 640px) {
+
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: 1px solid #000;
+    }
+
+    header form {
+        padding: 1.5rem;
+    }
+
+}
+
+@media screen and (min-width: 425px) {
+
+    nav img {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+    nav i {
+        font-size: 1.5rem;
+    }
+
+    nav a {
+        flex-direction: row;
+    }
+
+    nav span {
+        margin-top: 0;
+        margin-left: .5rem;
+    }
 }
