@@ -1,8 +1,10 @@
-document.title = `${site.nome} - Página modelo`;
+window.onload = () => {
 
-_('#wrap').innerHTML = template();
+    document.title = `${site.nome} - Página modelo`;
 
-out = `
+    _('#wrap').innerHTML = template();
+
+    out = `
 
 <h2>Página Modelo</h2>
 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fuga ducimus ab minus excepturi repellendus et molestias suscipit recusandae, est aliquam reiciendis laborum. In dolorem, obcaecati iste saepe iusto harum cupiditate!</p>
@@ -17,4 +19,6 @@ out = `
 
 `;
 
-_('#conteudo').innerHTML = out;
+    _('#conteudo').innerHTML = out;
+
+}

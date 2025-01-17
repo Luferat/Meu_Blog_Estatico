@@ -21,9 +21,12 @@ const site = {
     verPerfil: false,
 
     /**
-     * Controla o formulário do sistema de comentários.
-     * Se `true`, exibe o formulário do sistema de comentários do artigo.
-     * Se `false`, desliga o formulário do sistema de comentários do artigo.
+     * Controla globalmente o sistema de comentários.
+     * Se `true`, exibe o sistema de comentários dos artigos.
+     * Se `false`, desliga o sistema de comentários dos artigos.
+     * 
+     * Nota: os comentários em um artigo específico também podem ser 
+     * ligados/desligados usando o campo "comentarios" de cada documento.
      **/
-    verComentariosForm: true,
+    verComentarios: true,
 }
