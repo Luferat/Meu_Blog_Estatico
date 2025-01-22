@@ -204,6 +204,7 @@ footer>div div {
     margin-top: .35rem;
 }
 
+/* Para larguras de 640px ou mais */
 @media screen and (min-width: 640px) {
 
     header {
