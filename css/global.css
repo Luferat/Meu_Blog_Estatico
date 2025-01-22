@@ -3,7 +3,10 @@
 /* Importa FontAwesome */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
 
-/* Definições de estilo */
+/* 
+Variáveis de definições de estilo 
+Adicione novas variáveis para facilitar a reestilização
+*/
 
 :root {
     --fonte-padrao: sans-serif;
@@ -56,30 +59,36 @@ form button {
 /* Fundo da página */
 
 body {
-    background: var(--cor-do-fundo);
+    background-color: var(--cor-do-fundo);
+    background-image: url('../img/bg01.jpg');
+    background-repeat: repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
+
+/* Estrutura da página */
 
 #wrap {
     display: flex;
     flex-direction: column;
-}
-
-main {
-    flex-grow: 1;
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
 }
 
 /* Cabeçalho → <header> */
 
 header {
     background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
 }
 
 header img {
     display: block;
-    /* 4 * 16 = 64 pixels */
     height: 4rem;
     width: auto;
-    margin: .5rem 1rem .5rem .5rem;
+    margin: .5rem;
 }
 
 header div {
@@ -117,14 +126,14 @@ header form button {
 nav {
     background-color: orange;
     display: flex;
-    border-top: 2px solid orange;
-    border-bottom: 2px solid orange;
+    border: 2px solid orange;
     justify-content: flex-end;
 }
 
 nav img {
     height: 2rem;
     width: 2rem;
+    border-radius: 50%;
 }
 
 nav i {
@@ -135,8 +144,9 @@ nav a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
+    padding: .5rem;
     color: #000;
+    border-radius: .3rem;
 }
 
 nav a:hover {
@@ -155,11 +165,76 @@ nav span {
 /* Conteudo central → <main> */
 
 main {
+    flex-grow: 1;
     background-color: #fff;
+    padding: 0 1rem;
+    line-height: 1.3;
+    border-top: 1px solid #000;
 }
 
-
 /* Rodapé → <footer> */
+
 footer {
     background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+}
+
+footer a {
+    color: orange;
+}
+
+footer a:hover {
+    color: #b17300;
+}
+
+footer>a {
+    font-size: 1.8rem;
+    padding: .5rem;
+}
+
+footer>div {
+    font-size: small;
+    text-align: center;
+}
+
+footer>div div {
+    margin-top: .35rem;
+}
+
+@media screen and (min-width: 640px) {
+
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: 1px solid #000;
+    }
+
+    header form {
+        padding: 1.5rem;
+    }
+
+}
+
+@media screen and (min-width: 425px) {
+
+    nav img {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+    nav i {
+        font-size: 1.5rem;
+    }
+
+    nav a {
+        flex-direction: row;
+    }
+
+    nav span {
+        margin-top: 0;
+        margin-left: .5rem;
+    }
 }
