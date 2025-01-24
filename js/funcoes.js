@@ -104,8 +104,7 @@ function template() {
         <footer>
             <a href="/" title="Ir para a página inicial."><i class="fa-solid fa-house fa-fw"></i></a>
             <div>
-                <i class="fa-regular fa-copyright fa-rotate-180 fa-fw"></i>
-                <span>Copyleft 2025 ${site.proprietario}</span>
+                ${site.licensa}
                 <div><a href="privacidade.html">Políticas de Privacidade</a></div>
             </div>
             <a href="#wrap" title="ir para o começo desta página."><i class="fa-solid fa-circle-up fa-fw"></i></a>

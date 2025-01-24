@@ -1,7 +1,6 @@
 /**
  * Configuração do site;
  **/
-
 const site = {
 
     /**
@@ -21,6 +20,18 @@ const site = {
      **/
     verPerfil: true,
 
-    proprietario: "Joca da Silva"
+    /**
+     * Ano de lançamento do site
+     **/
+    ano: 2025,
+
+    /**
+     * Licensa do site usada no rodapé
+     **/
+    licensa: `
+    <i class="fa-regular fa-copyright fa-rotate-180 fa-fw"></i>
+    <span>Copyleft <span id="footerAno"></span> Joca da Silva</span>
+    `,
 
 }
+
