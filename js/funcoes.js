@@ -169,3 +169,54 @@ function template() {
     `;
     return out;
 }
+
+function verComentariosForm() {
+    console.log(`verComentariosForm`);
+}
+
+function verComentariosLista(artigoID) {
+    let out = '';
+    db.collection("comentarios")
+        .where("artigo", "==", artigoID)
+        .where("status", "==", "on")
+        .orderBy("data")
+        .onSnapshot(async (querySnapshot) => {
+            if (!querySnapshot.empty) {
+
+                if (querySnapshot.size > 1) {
+                    out = `<p class="conta">${querySnapshot.size} comentários.</p>`;
+                } else {
+                    out = `<p class="conta">1 comentário.</p>`;
+                }
+
+                for (const doc of querySnapshot.docs) {
+                    const comentario = doc.data();
+                    try {
+                        const autor = await getUser(comentario.autor);
+                        comentario['dataBr'] = dataISOparaBR(comentario.data);
+
+                        out += `
+                                <div class="comentario">
+                                    <small>Por ${autor.nome} em ${comentario.dataBr}.</small>
+                                    <div>${comentario.comentario}</div>
+                                </div>
+                            `;
+                    } catch (error) {
+                        console.error("Erro ao obter autor: ", error);
+                        out += `
+                                <div class="comentario">
+                                    <small>Autor não encontrado em ${comentario.dataBr}.</small>
+                                    <div>${comentario.comentario}</div>
+                                </div>
+                            `;
+                    }
+                }
+            } else {
+                out = `<p>Nenhum comentário! Seja o primeiro a comentar...</p>`;
+            }
+
+            console.log(out);
+
+            return out;
+        });
+}

@@ -36,59 +36,14 @@ db.collection("artigos")
                 <h2>${artigo.titulo}</h2>
                 <small>Em ${data}.</small>
                 <div>${artigo.conteudo}</div>
-
-                <h3>Comentários</h3>
-                <div id="formComentarios"></div>
-                <div id="listaComentarios"></div>
             `;
 
+            if (artigo.comentarios == "on") {
+                out += verComentariosForm();
+                out += verComentariosLista(artigo.id);
+            }
+
             _('#conteudo').innerHTML = out;
-            if (site.verComentarios) comentarios();
-
-            db.collection("comentarios")
-                .where("artigo", "==", artigo.id)
-                .where("status", "==", "on")
-                .orderBy("data")
-                .onSnapshot(async (querySnapshot) => {
-                    let out = '';
-                    if (!querySnapshot.empty) {
-
-                        if (querySnapshot.size > 1) {
-                            out = `<p class="conta">${querySnapshot.size} comentários.</p>`;
-                        } else {
-                            out = `<p class="conta">1 comentário.</p>`;
-                        }
-
-                        for (const doc of querySnapshot.docs) {
-                            const comentario = doc.data();
-                            try {
-                                const autor = await getUser(comentario.autor);
-                                comentario['dataBr'] = dataISOparaBR(comentario.data);
-
-                                out += `
-                                <div class="comentario">
-                                    <small>Por ${autor.nome} em ${comentario.dataBr}.</small>
-                                    <div>${comentario.comentario}</div>
-                                </div>
-                            `;
-                            } catch (error) {
-                                console.error("Erro ao obter autor: ", error);
-                                out += `
-                                <div class="comentario">
-                                    <small>Autor não encontrado em ${comentario.dataBr}.</small>
-                                    <div>${comentario.comentario}</div>
-                                </div>
-                            `;
-                            }
-                        }
-                    } else {
-                        out = `<p>Nenhum comentário! Seja o primeiro a comentar...</p>`;
-                    }
-
-                    _('#listaComentarios').innerHTML = out;
-                });
-
-
         } else {
             location.href = '404.html';
         }
