@@ -1,5 +1,10 @@
 /**
- * Configuração do site;
+ * Configuração do site.
+ * 
+ * Essas são chaves de configuração global do site que permitem o 
+ * reaproveitamento rápido do código.
+ * 
+ * Você pode adicionar novas chaves aqui conforme sua necessidade.
  **/
 const site = {
 

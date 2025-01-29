@@ -17,11 +17,6 @@ const auth = firebaseApp.auth();
  **/
 window.onload = () => { // Isso é uma "arrow function"
 
-    /**
-     * Altera o <title> padrão da página atual.
-     **/
-    document.title = site.nome;
-
     // Carrega o template HTML em div#wrap
     _('#wrap').innerHTML = template();
 

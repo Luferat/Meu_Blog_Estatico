@@ -20,7 +20,6 @@ function formatarData(data, formato) {
     const horas = String(data.getHours()).padStart(2, '0');
     const minutos = String(data.getMinutes()).padStart(2, '0');
     const segundos = String(data.getSeconds()).padStart(2, '0');
-
     if (formato === 'ISO') {
         return `${ano}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
     } else if (formato === 'BR') {
@@ -101,7 +100,7 @@ function template() {
             <a href="/" title="Página incial"><i class="fa-solid fa-house fa-fw"></i><span>Início</span></a>
             <a href="contatos.html" title="Faça contato conosto"><i class="fa-solid fa-comments fa-fw"></i><span>Contatos</span></a>
             <a href="sobre.html" title="Sobre o site e o autor"><i class="fa-solid fa-circle-info fa-fw"></i><span>Sobre</span></a>
-            <a href="login.html" id="usuarioAcao" title="Logue-se no site"><img src="img/anonimous.png" alt="Faça login"><span>Login</span></a>
+            <a href="login.html" id="usuarioAcao" title="Logue-se no site"><img src="img/anonimous.png" alt="Faça login" referrerpolicy="no-referrer"><span>Login</span></a>
         </nav>
         <main id="conteudo"></main>
         <footer>
