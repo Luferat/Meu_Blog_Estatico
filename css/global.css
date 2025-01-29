@@ -50,7 +50,8 @@ a:hover {
 /* Reset dos campos de formulário */
 
 form input,
-form button {
+form button,
+form textarea {
     font-family: inherit;
     font-size: inherit;
     padding: .35rem .5rem;

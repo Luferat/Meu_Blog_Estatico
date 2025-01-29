@@ -24,10 +24,23 @@ const artigoId = urlParams.get('artigo');
 // Obtém o artigo completo
 pegaArtigoCompleto(artigoId);
 
-// Processa envio do formulário
-_('#comentarioForm').onsubmit = (ev) => {
-    ev.
-    console.log()
+/**
+ * Processa o envio do formulário.
+ * @param {Event} ev 
+ * @returns 
+ */
+function enviaForm(ev) {
+    ev.preventDefault();
+    txtComentario = stripTags(this.txtComentario.value, site.tagsPermitidasComentario, true);
+    if (txtComentario == '') return false;
+    let form = {
+        artigo: this.artigo.value,
+        autor: this.autor.value,
+        comentario: txtComentario,
+        data: agoraISO(),
+        status: 'on'
+    }
+    db.collection("comentarios").add(form);
 }
 
 /**
@@ -54,6 +67,7 @@ function pegaArtigoCompleto(artigoId) {
 
                     // Elementos de comentário
                     out += `
+                        <h3>Comentários</h3>
                         <div id="formComentario"></div>
                         <div id="listaComentarios"></div>                    
                     `;
@@ -70,9 +84,13 @@ function pegaArtigoCompleto(artigoId) {
                         if (user) {
                             out = montaForm(user, artigo);
                         } else {
-                            out = '<p>LOGIN AQUI...</p>';
+                            out = '<p>Logue-se usando sua conta Google para comentar!</p>';
                         }
                         _('#formComentario').innerHTML = out;
+
+                        // Monitora envio do formulário de comentário
+                        if (_('#comentarioForm').length > 0)
+                            _('#comentarioForm').addEventListener('submit', enviaForm);
                     });
                 }
 
@@ -83,14 +101,27 @@ function pegaArtigoCompleto(artigoId) {
         });
 }
 
+/**
+ * Monta o formulário de comentário
+ * @param {Object} user 
+ * @param {Object} artigo 
+ * @returns 
+ */
 function montaForm(user, artigo) {
+    let listaTags = '';
+    if (site.tagsPermitidasComentario.length > 0) {
+        site.tagsPermitidasComentario.forEach((tag) => {
+            listaTags += `<${tag}>, `;
+        });
+        listaTags = `<span class="help" title=" Tags HTML permitidas: ` + listaTags.slice(0, -2) + `">?</span>`;
+    }
     return `
-    <div class="quem">Comentando como ${user.displayName}:</div>
+    <div class="quem">Comentando como <em>${user.displayName}</em>: ${listaTags}</div>
     <form method="post" name="formComentario" id="comentarioForm" action="/">
+        <input type="hidden" name="artigo" value="${artigo.id}">
+        <input type="hidden" name="autor" value="${user.uid}">
         <textarea name="txtComentario" id="txtComentario" placeholder="Comente aqui..."></textarea>
         <button type="submit">Enviar</button>
-        <input type="hidden" name="artigo" value="${artigo.id}">
-        <input type="hidden" mane="autor" value="${user.uid}">
     </form>
     `;
 }
@@ -108,9 +139,9 @@ function listaComentarios(artigoId) {
             let out = '';
             if (!querySnapshot.empty) {
                 if (querySnapshot.size > 1) {
-                    out = `<p class="conta">${querySnapshot.size} comentários.</p>`;
+                    out = `<h4 class="conta">${querySnapshot.size} comentários:</h4>`;
                 } else {
-                    out = `<p class="conta">1 comentário.</p>`;
+                    out = `<h4 class="conta">1 comentário:</h4>`;
                 }
                 for (const doc of querySnapshot.docs) {
                     const comentario = doc.data();
@@ -128,7 +159,7 @@ function listaComentarios(artigoId) {
                     }
                 }
             } else {
-                out = `<p>Nenhum comentário! Seja o primeiro a comentar...</p>`;
+                out = `<h4 class="conta">Nenhum comentário! Seja o primeiro a comentar...</h4>`;
             }
             _('#listaComentarios').innerHTML = out;
         });

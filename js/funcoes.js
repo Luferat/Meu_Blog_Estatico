@@ -95,17 +95,13 @@ function updateUser(user) {
  * @returns {Promise<object>} Uma promessa que resolve com os dados do usuário, ou rejeita com um erro se o usuário não for encontrado.
  * @throws {Error} Se o usuário não for encontrado.
  */
-function getUser(userId) {
-    return db.collection('usuarios')
-        .doc(userId)
-        .get()
-        .then((doc) => {
-            if (doc.exists) {
-                return doc.data();
-            } else {
-                throw new Error("Usuário não encontrado");
-            }
-        });
+async function getUser(userId) {
+    const doc = await db.collection('usuarios').doc(userId).get();
+    if (doc.exists) {
+        return doc.data();
+    } else {
+        throw new Error("Usuário não encontrado");
+    }
 }
 
 /**
@@ -126,6 +122,105 @@ function _(seletor) {
     }
     return document.querySelectorAll(seletor);
 }
+
+/**
+ * Remove todas as tags HTML exceto as permitidas e substitui as quebras de linha por <br>.
+ * 
+ * @param {string} htmlText - O HTML a ser processado.
+ * @param {string[]} allowedTags - Lista de tags HTML que devem ser preservadas.
+ * @returns {string} - O HTML com apenas as tags permitidas e <br> no lugar das quebras de linha.
+ */
+function stripTags(htmlText, allowedTags, lineBreaks = false) {
+    // Substitui as quebras de linha por um marcador temporário antes de processar
+    let preservedLineBreaks = htmlText.replace(/\n/g, '[[LINE_BREAK]]');
+
+    // Cria um elemento div temporário para manipular o HTML
+    let div = document.createElement('div');
+    div.innerHTML = preservedLineBreaks.trim();
+
+    // Remove qualquer conteúdo dentro de <script> e <style> para evitar código malicioso
+    let scripts = div.getElementsByTagName('script');
+    let styles = div.getElementsByTagName('style');
+
+    // Remove os nós <script> e <style>
+    while (scripts.length > 0) scripts[0].parentNode.removeChild(scripts[0]);
+    while (styles.length > 0) styles[0].parentNode.removeChild(styles[0]);
+
+    // Agora, vamos filtrar as tags permitidas
+    let childNodes = div.querySelectorAll('*');
+
+    childNodes.forEach(node => {
+        // Se a tag não está na lista de permitidas, removemos o nó
+        if (!allowedTags.includes(node.nodeName.toLowerCase())) {
+            node.replaceWith(...node.childNodes); // Substitui o nó pela parte interna (texto ou outros elementos)
+        }
+    });
+
+    // Agora, converte os marcadores temporários de volta para <br>
+    if (lineBreaks) {
+        result = div.innerHTML.replace(/\[\[LINE_BREAK\]\]/g, '<br>');
+    } else {
+        result = div.innerHTML.replace(/\[\[LINE_BREAK\]\]/g, '');
+    }
+
+    // Retorna o HTML com as tags permitidas preservadas e as quebras de linha como <br>
+    return result;
+}
+
+/**
+ * Exibe os comentários associados a um artigo em tempo real, listando seus detalhes.
+ *
+ * @param {string} artigoID - O ID do artigo para o qual os comentários devem ser exibidos.
+ * @returns {void} Esta função não retorna diretamente, mas manipula a saída dos comentários.
+ *
+ * @description Esta função utiliza o Firestore para monitorar em tempo real as alterações nos comentários relacionados
+ * ao artigo especificado. Os comentários são filtrados por status "on" e ordenados por data. Os dados de autor são
+ * buscados de forma assíncrona para enriquecer a exibição dos comentários. Em caso de erro ao obter o autor,
+ * uma mensagem apropriada é exibida.
+ */
+function verComentariosLista(artigoID) {
+    let out = '';
+    db.collection("comentarios")
+        .where("artigo", "==", artigoID)
+        .where("status", "==", "on")
+        .orderBy("data")
+        .onSnapshot(async (querySnapshot) => {
+            if (!querySnapshot.empty) {
+                if (querySnapshot.size > 1) {
+                    out = `<p class="conta">${querySnapshot.size} comentários.</p>`;
+                } else {
+                    out = `<p class="conta">1 comentário.</p>`;
+                }
+
+                for (const doc of querySnapshot.docs) {
+                    const comentario = doc.data();
+                    try {
+                        const autor = await getUser(comentario.autor);
+                        comentario['dataBr'] = dataISOparaBR(comentario.data);
+
+                        out += `
+                                <div class="comentario">
+                                    <small>Por ${autor.nome} em ${comentario.dataBr}.</small>
+                                    <div>${comentario.comentario}</div>
+                                </div>
+                            `;
+                    } catch (error) {
+                        console.error("Erro ao obter autor: ", error);
+                        out += `
+                                <div class="comentario">
+                                    <small>Autor não encontrado em ${comentario.dataBr}.</small>
+                                    <div>${comentario.comentario}</div>
+                                </div>
+                            `;
+                    }
+                }
+            } else {
+                out = `<p>Nenhum comentário! Seja o primeiro a comentar...</p>`;
+            }
+            return out;
+        });
+}
+
 
 /**
  * Gera o template HTML para a estrutura básica da página.
@@ -170,53 +265,3 @@ function template() {
     return out;
 }
 
-function verComentariosForm() {
-    return `<p>Formulário</p>`;
-}
-
-function verComentariosLista(artigoID) {
-    let out = '';
-    db.collection("comentarios")
-        .where("artigo", "==", artigoID)
-        .where("status", "==", "on")
-        .orderBy("data")
-        .onSnapshot(async (querySnapshot) => {
-            if (!querySnapshot.empty) {
-
-                if (querySnapshot.size > 1) {
-                    out = `<p class="conta">${querySnapshot.size} comentários.</p>`;
-                } else {
-                    out = `<p class="conta">1 comentário.</p>`;
-                }
-
-                for (const doc of querySnapshot.docs) {
-                    const comentario = doc.data();
-                    try {
-                        const autor = await getUser(comentario.autor);
-                        comentario['dataBr'] = dataISOparaBR(comentario.data);
-
-                        out += `
-                                <div class="comentario">
-                                    <small>Por ${autor.nome} em ${comentario.dataBr}.</small>
-                                    <div>${comentario.comentario}</div>
-                                </div>
-                            `;
-                    } catch (error) {
-                        console.error("Erro ao obter autor: ", error);
-                        out += `
-                                <div class="comentario">
-                                    <small>Autor não encontrado em ${comentario.dataBr}.</small>
-                                    <div>${comentario.comentario}</div>
-                                </div>
-                            `;
-                    }
-                }
-            } else {
-                out = `<p>Nenhum comentário! Seja o primeiro a comentar...</p>`;
-            }
-
-            console.log(out);
-
-            return out;
-        });
-}

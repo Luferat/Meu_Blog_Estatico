@@ -20,4 +20,10 @@ const site = {
      **/
     verPerfil: false,
 
+    /**
+     * Lista de tags HTML permitidas nos comentários.
+     * Todas as outras tags html serão removidas.
+     **/
+    tagsPermitidasComentario: ['em', 'strong', 'i', 'b']
+
 }
