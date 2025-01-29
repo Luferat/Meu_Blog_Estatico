@@ -12,7 +12,7 @@
  * @param {Date} data - A data a ser formatada.
  * @param {string} formato - O formato desejado ('ISO' ou 'BR').
  * @returns {string} A data formatada conforme o formato especificado.
- */
+ **/
 function formatarData(data, formato) {
     const ano = data.getFullYear();
     const mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -33,7 +33,7 @@ function formatarData(data, formato) {
 /**
  * Obtém a data e hora atual no formato ISO.
  * @returns {string} A data e hora atual no formato ISO.
- */
+ **/
 function agoraISO() {
     const agora = new Date();
     return formatarData(agora, 'ISO');
@@ -43,7 +43,7 @@ function agoraISO() {
  * Converte uma data do formato ISO para o formato BR.
  * @param {string} dataISO - A data no formato ISO (YYYY-MM-DD HH:MM:SS).
  * @returns {string} A data no formato BR (DD/MM/YYYY HH:MM).
- */
+ **/
 function dataISOparaBR(dataISO) {
     const data = new Date(dataISO);
     return formatarData(data, 'BR');
@@ -53,7 +53,7 @@ function dataISOparaBR(dataISO) {
  * Converte uma data do formato JavaScript para o formato ISO.
  * @param {Date} dataJS - A data no formato JavaScript.
  * @returns {string} A data no formato ISO (YYYY-MM-DD HH:MM:SS).
- */
+ **/
 function dataJStoISO(dataJS) {
     const data = new Date(dataJS);
     return formatarData(data, 'ISO');
@@ -70,7 +70,7 @@ function dataJStoISO(dataJS) {
  *     Selecionar por classe: let el = _('.minhaClasse'); // Retorna todos os elementos com a classe "minhaClasse"
  *     Selecionar por tag (ou seletores mais complexos): let el = _('div > p'); // Retorna todos os <p> dentro de <div>
  *     Selecionar elemento por tag: let el = _('i'); // Retorna todos os elementos <i>
- */
+ **/
 function _(seletor) {
     if (seletor.startsWith('#') || seletor.startsWith('.') || seletor.includes(' ')) {
         const resultado = document.querySelectorAll(seletor);
@@ -79,6 +79,9 @@ function _(seletor) {
     return document.querySelectorAll(seletor);
 }
 
+/**
+ * Retorna o template HTML padrão do site
+ **/
 function template() {
     return `
 
