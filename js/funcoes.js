@@ -171,7 +171,7 @@ function template() {
 }
 
 function verComentariosForm() {
-    console.log(`verComentariosForm`);
+    return `<p>Formulário</p>`;
 }
 
 function verComentariosLista(artigoID) {
