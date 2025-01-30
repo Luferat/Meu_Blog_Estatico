@@ -79,6 +79,13 @@ function _(seletor) {
 }
 
 /**
+ * Login no firebase Authentication
+ */
+function fbSigIn(){
+    firebase.auth().signInWithPopup(provider);
+}
+
+/**
  * Retorna o template HTML padrão do site
  **/
 function template() {
@@ -100,7 +107,7 @@ function template() {
             <a href="/" title="Página incial"><i class="fa-solid fa-house fa-fw"></i><span>Início</span></a>
             <a href="contatos.html" title="Faça contato conosto"><i class="fa-solid fa-comments fa-fw"></i><span>Contatos</span></a>
             <a href="sobre.html" title="Sobre o site e o autor"><i class="fa-solid fa-circle-info fa-fw"></i><span>Sobre</span></a>
-            <a href="login.html" id="usuarioAcao" title="Logue-se no site"><img src="img/anonimous.png" alt="Faça login" referrerpolicy="no-referrer"><span>Login</span></a>
+            <a href="login.html" id="usuarioAcao" title="Logue-se no site" data-acao="login"><img src="img/anonimous.png" alt="Faça login" referrerpolicy="no-referrer"><span>Login</span></a>
         </nav>
         <main id="conteudo"></main>
         <footer>
