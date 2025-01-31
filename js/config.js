@@ -21,22 +21,29 @@ const site = {
   /**
    * Controla a ação ao clicar no link do usuário logado no menu principal
    * Se `true`, exibe o perfil do usuário → perfil.html
-   * Se `false`, faz logout direto
+   * Se `false`, faz logout direto ← Útil durante o desenvolvimento
    **/
   verPerfil: true,
 
   /**
-   * Ano de lançamento do site
+   * Ano de lançamento do site.
+   * Usado na licensa do site no rodapé.
    **/
   ano: 2025,
 
   /**
-   * Licensa do site usada no rodapé
+   * Licensa do site usada no rodapé.
+   * `span#footerAno` receberá o ano conforme `site.ano` acima.
    **/
   licensa: `
     <i class="fa-regular fa-copyright fa-rotate-180 fa-fw"></i>
     <span>Copyleft <span id="footerAno"></span> Joca da Silva</span>
     `,
 
+  /**
+  * Lista de tags HTML permitidas nos comentários.
+  * Todas as outras tags html serão removidas.
+  **/
+  tagsPermitidasComentario: ['em', 'strong', 'i', 'b', 'sup', 'sub', 'code']
 }
 
