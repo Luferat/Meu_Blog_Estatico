@@ -49,7 +49,7 @@ function dataISOparaBR(dataISO) {
 }
 
 /**
- * Converte uma data do formato JavaScript para o formato ISO.
+ * Converte uma data do formato JavaScript (GMT) para o formato ISO.
  * @param {Date} dataJS - A data no formato JavaScript.
  * @returns {string} A data no formato ISO (YYYY-MM-DD HH:MM:SS).
  **/
@@ -79,10 +79,39 @@ function _(seletor) {
 }
 
 /**
- * Login no firebase Authentication
+ * Login no Firebase Authentication
  */
-function fbSigIn(){
+function fbSigIn() {
     firebase.auth().signInWithPopup(provider);
+}
+
+/**
+ * Função para realizar o logout do Firebase e redirecionar o usuário, se necessário.
+ * 
+ * Esta função efetua o logout do Firebase, usando o método `signOut` da autenticação do Firebase.
+ * Se o parâmetro `abrePagina` for fornecido e não estiver vazio, o navegador será redirecionado para a URL especificada.
+ *
+ * @param {string} [abrePagina=''] - URL para a qual o usuário será redirecionado após o logout. 
+ *                                   Se não for fornecido ou for uma string vazia, o redirecionamento não ocorre.
+ * 
+ * @returns {void} - A função não retorna nenhum valor.
+ * 
+ * @example
+ * // Realiza o logout e redireciona o usuário para a página inicial.
+ * fbSignOut('index.html');
+ * 
+ * @example
+ * // Realiza o logout sem redirecionar.
+ * fbSignOut();
+ */
+function fbSignOut(abrePagina = '') {
+    // Realiza o logout do Firebase
+    firebase.auth().signOut();
+
+    // Se o parâmetro abrePagina não for vazio, redireciona para a URL fornecida
+    if (abrePagina != '') {
+        location.href = abrePagina;
+    }
 }
 
 /**

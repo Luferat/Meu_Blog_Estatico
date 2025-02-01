@@ -1,0 +1,35 @@
+.fotoPerfil {
+    display: block;
+    margin: auto;
+    width: auto;
+    max-width: 100%;
+}
+
+.ulDados {
+    display: table;
+    margin: 2rem auto;
+    padding-left: 1rem;
+    line-height: 1.5;
+}
+
+.btnPerfil,
+.btnLogout {
+    font-family: inherit;
+    font-size: inherit;
+    display: block;
+    margin: auto;
+    width: 230px;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: .3rem;
+    color: white;
+    cursor: pointer;
+}
+
+.btnPerfil {
+    background-color: steelblue;
+}
+
+.btnLogout {
+    background-color: orangered;
+}

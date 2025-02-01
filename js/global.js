@@ -24,9 +24,37 @@ window.onload = () => { // Isso é uma "arrow function"
     // Observa as mudanças de status do usuário
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-            console.log(user)
+            // console.log(user)
+
+            // Se está logado
+            _('#usuarioAcao img').src = user.photoURL; // Mostra a imagem
+
+            // Se é para mostra o perfil...
+            if (site.verPerfil) {
+                _('#usuarioAcao img').alt = 'Ver seu perfil'; // Troca o alt da imagem
+                _('#usuarioAcao').title = 'Ver seu perfil'; // Troca o title
+                _('#usuarioAcao').href = 'perfil.html'; // Troca o link ao clicar (inútil)
+                _('#usuarioAcao').setAttribute('data-acao', 'perfil'); // Troca o valor de `data-acao`
+                _('#usuarioAcao span').innerHTML = 'Perfil'; // Troca a label do botão
+            } else {
+                _('#usuarioAcao img').alt = 'Faça logout'; // Troca o alt da imagem
+                _('#usuarioAcao').title = 'Faça logout';
+                _('#usuarioAcao').href = 'logout.html';
+                _('#usuarioAcao').setAttribute('data-acao', 'logout')
+                _('#usuarioAcao span').innerHTML = 'Logout';
+            }
+
         } else {
-            console.log('não logado')
+            // Se está fazendo logout
+            // console.log('não logado')
+
+            // Se está logado
+            _('#usuarioAcao img').src = 'img/anonimous.png'; // Mostra a imagem anônimo
+            _('#usuarioAcao img').alt = 'Faça login'; // Troca o alt da imagem
+            _('#usuarioAcao').title = 'Faça login'; // Troca o title
+            _('#usuarioAcao').href = 'login.html'; // Troca o link ao clicar (inútil)
+            _('#usuarioAcao').setAttribute('data-acao', 'login'); // Troca o valor de `data-acao`
+            _('#usuarioAcao span').innerHTML = 'Login'; // Troca a label do botão
         }
     });
 
@@ -65,7 +93,7 @@ window.onload = () => { // Isso é uma "arrow function"
             case 'perfil':
                 location.href = 'perfil.html';
         }
-        
+
     });
 
 
