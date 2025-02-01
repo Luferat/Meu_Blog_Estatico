@@ -50,7 +50,7 @@ firebase.auth().onAuthStateChanged((user) => {
         _('#conteudo').innerHTML = out;
 
     } else {
-        // Se não está logado, mostra 404.html
+        // Se não está logado, mostra index.html
         location.href = 'index.html';
     }
 });

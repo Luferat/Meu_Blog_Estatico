@@ -86,32 +86,104 @@ function fbSigIn() {
 }
 
 /**
- * Função para realizar o logout do Firebase e redirecionar o usuário, se necessário.
- * 
- * Esta função efetua o logout do Firebase, usando o método `signOut` da autenticação do Firebase.
- * Se o parâmetro `abrePagina` for fornecido e não estiver vazio, o navegador será redirecionado para a URL especificada.
- *
- * @param {string} [abrePagina=''] - URL para a qual o usuário será redirecionado após o logout. 
- *                                   Se não for fornecido ou for uma string vazia, o redirecionamento não ocorre.
- * 
- * @returns {void} - A função não retorna nenhum valor.
- * 
- * @example
- * // Realiza o logout e redireciona o usuário para a página inicial.
- * fbSignOut('index.html');
- * 
- * @example
- * // Realiza o logout sem redirecionar.
- * fbSignOut();
+ * Logout do Firebase
  */
-function fbSignOut(abrePagina = '') {
-    // Realiza o logout do Firebase
+function fbSignOut() {
     firebase.auth().signOut();
+}
 
-    // Se o parâmetro abrePagina não for vazio, redireciona para a URL fornecida
-    if (abrePagina != '') {
-        location.href = abrePagina;
+/**
+ * Remove todas as tags HTML exceto as permitidas e substitui as quebras de linha por <br>.
+ * 
+ * @param {string} htmlText - O HTML a ser processado.
+ * @param {string[]} allowedTags - Lista de tags HTML que devem ser preservadas.
+ * @returns {string} - O HTML com apenas as tags permitidas e <br> no lugar das quebras de linha.
+ */
+function stripTags(htmlText, allowedTags, lineBreaks = false) {
+    // Substitui as quebras de linha por um marcador temporário antes de processar
+    let preservedLineBreaks = htmlText.replace(/\n/g, '[[LINE_BREAK]]');
+
+    // Cria um elemento div temporário para manipular o HTML
+    let div = document.createElement('div');
+    div.innerHTML = preservedLineBreaks.trim();
+
+    // Remove qualquer conteúdo dentro de <script> e <style> para evitar código malicioso
+    let scripts = div.getElementsByTagName('script');
+    let styles = div.getElementsByTagName('style');
+
+    // Remove os nós <script> e <style>
+    while (scripts.length > 0) scripts[0].parentNode.removeChild(scripts[0]);
+    while (styles.length > 0) styles[0].parentNode.removeChild(styles[0]);
+
+    // Agora, vamos filtrar as tags permitidas
+    let childNodes = div.querySelectorAll('*');
+
+    childNodes.forEach(node => {
+        // Se a tag não está na lista de permitidas, removemos o nó
+        if (!allowedTags.includes(node.nodeName.toLowerCase())) {
+            node.replaceWith(...node.childNodes); // Substitui o nó pela parte interna (texto ou outros elementos)
+        }
+    });
+
+    // Agora, converte os marcadores temporários de volta para <br>
+    if (lineBreaks) {
+        result = div.innerHTML.replace(/\[\[LINE_BREAK\]\]/g, '<br>');
+    } else {
+        result = div.innerHTML.replace(/\[\[LINE_BREAK\]\]/g, '');
     }
+
+    // Retorna o HTML com as tags permitidas preservadas e as quebras de linha como <br>
+    return result;
+}
+
+/**
+ * Cadastra ou atualiza os dados do usuário na coleção `usuarios`.
+ * @param {object} user - Dados do usuário do Firebase Authentication.
+ */
+function updateUser(user) {
+    db.collection("usuarios")
+        .doc(user.uid)
+        .set({
+            nome: user.displayName,
+            email: user.email,
+            foto: user.photoURL,
+            data: dataJStoISO(user.metadata.creationTime),
+            ultimoLogin: dataJStoISO(user.metadata.lastSignInTime),
+        });
+}
+
+/**
+ * Obtém os dados do usuário a partir do ID do usuário.
+ * @param {string} userId - O ID do usuário.
+ * @returns {Promise<object>} Uma promessa que resolve com os dados do usuário, ou rejeita com um erro se o usuário não for encontrado.
+ * @throws {Error} Se o usuário não for encontrado.
+ */
+async function getUser(userId) {
+    const doc = await db.collection('usuarios').doc(userId).get();
+    if (doc.exists) {
+        return doc.data();
+    } else {
+        throw new Error("Usuário não encontrado");
+    }
+}
+
+/**
+ * Retorna o "Node" de um elemento ou a "NodeList" de uma coleção de elementos usando o seletor especificado.
+ * 
+ * @param {string} seletor - O seletor CSS do(s) elemento(s) a ser(em) selecionado(s).
+ * @returns {Node|NodeList} O "Node" do elemento se houver apenas um, ou a "NodeList" dos elementos correspondentes.
+ * 
+ * Exemplos de uso:
+ *     Selecionar por ID: let el = _('#meuID'); // Retorna o <div> com o id especificado
+ *     Selecionar por classe: let el = _('.minhaClasse'); // Retorna todos os elementos <div> com a classe "minhaClasse"
+ *     Selecionar por tag (ou seletores mais complexos): let el = _('div > p'); // Retorna todos os <p> dentro de <div>
+ */
+function _(seletor) {
+    if (seletor.startsWith('#') || seletor.startsWith('.') || seletor.includes(' ')) {
+        const resultado = document.querySelectorAll(seletor);
+        return resultado.length === 1 ? resultado[0] : resultado;
+    }
+    return document.querySelectorAll(seletor);
 }
 
 /**

@@ -44,6 +44,9 @@ window.onload = () => { // Isso é uma "arrow function"
                 _('#usuarioAcao span').innerHTML = 'Logout';
             }
 
+            // Cria ou atualiza dados do usuário no banco de dados
+            updateUser(user);
+
         } else {
             // Se está fazendo logout
             // console.log('não logado')
