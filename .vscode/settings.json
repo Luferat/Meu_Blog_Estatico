@@ -4,5 +4,7 @@
     "[html]": {
         "editor.wordWrap": "off",
         "editor.formatOnSave": false
-    }
+    },
+    "html.format.wrapAttributes": "force-aligned",
+    "html.format.enable": false
 }
