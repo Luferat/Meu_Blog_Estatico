@@ -13,11 +13,6 @@
 document.title = site.nome;
 
 /**
- * Carrega o template da página.
- **/
-_('#wrap').innerHTML = template();
-
-/**
  * Obter lista de artigos.
  *  - Somente artigos com `status = "on"`;
  *  - Somente artigos com `data <= agora`.

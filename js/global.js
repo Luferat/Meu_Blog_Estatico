@@ -18,8 +18,7 @@ const provider = new firebase.auth.GoogleAuthProvider();
  **/
 window.onload = () => { // Isso é uma "arrow function"
 
-    // Carrega o template HTML em div#wrap
-    _('#wrap').innerHTML = template();
+    template('_template.html');
 
     // Observa as mudanças de status do usuário
     firebase.auth().onAuthStateChanged((user) => {
@@ -29,14 +28,16 @@ window.onload = () => { // Isso é uma "arrow function"
             // Se está logado
             _('#usuarioAcao img').src = user.photoURL; // Mostra a imagem
 
-            // Se é para mostra o perfil...
+            // Avalia a configuração de `site.verPerfil`
             if (site.verPerfil) {
+                // Ao clicar no botão, mostra o perfil
                 _('#usuarioAcao img').alt = 'Ver seu perfil'; // Troca o alt da imagem
                 _('#usuarioAcao').title = 'Ver seu perfil'; // Troca o title
                 _('#usuarioAcao').href = 'perfil.html'; // Troca o link ao clicar (inútil)
                 _('#usuarioAcao').setAttribute('data-acao', 'perfil'); // Troca o valor de `data-acao`
                 _('#usuarioAcao span').innerHTML = 'Perfil'; // Troca a label do botão
             } else {
+                // Ao clicar no botão, faz logout
                 _('#usuarioAcao img').alt = 'Faça logout'; // Troca o alt da imagem
                 _('#usuarioAcao').title = 'Faça logout';
                 _('#usuarioAcao').href = 'logout.html';
@@ -48,10 +49,8 @@ window.onload = () => { // Isso é uma "arrow function"
             updateUser(user);
 
         } else {
-            // Se está fazendo logout
+            // Se está fazendo logout ou não está logado
             // console.log('não logado')
-
-            // Se está logado
             _('#usuarioAcao img').src = 'img/anonimous.png'; // Mostra a imagem anônimo
             _('#usuarioAcao img').alt = 'Faça login'; // Troca o alt da imagem
             _('#usuarioAcao').title = 'Faça login'; // Troca o title
@@ -80,24 +79,7 @@ window.onload = () => { // Isso é uma "arrow function"
          **/
         _('#footerAno').innerHTML = site.ano;
 
-    _('#usuarioAcao').addEventListener('click', (evento) => {
-        // Bloqueia a execução normal do evento
-        evento.preventDefault();
 
-        let acao = _('#usuarioAcao').getAttribute('data-acao');
-        console.log(acao);
-        switch (acao) {
-            case 'login':
-                fbSigIn();
-                break;
-            case 'logout':
-                fbSignOut();
-                break;
-            case 'perfil':
-                location.href = 'perfil.html';
-        }
-
-    });
 
 
 }

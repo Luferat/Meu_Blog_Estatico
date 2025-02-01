@@ -187,38 +187,59 @@ function _(seletor) {
 }
 
 /**
- * Retorna o template HTML padrão do site
- **/
-function template() {
-    return `
+ * Trata a ação do usuário com base em eventos de clique em elementos monitorados.
+ * @param {Event} evento - Evento disparado ao clicar no botão do usuário.
+ */
+function usuarioAcao(evento) {
+    // Bloqueia a execução normal do evento
+    evento.preventDefault();
 
-        <header>
-            <div>
-                <a href="/">
-                    <img src="${site.logo}" alt="Logotipo do ${site.nome}">
-                </a>
-                <h1>${site.nome}</h1>
-            </div>
-            <form action="busca.html" method="get">
-                <input type="search" name="q" placeholder="Pesquisar...">
-                <button type="submit"><i class="fa-solid fa-magnifying-glass fa-fw"></i></button>
-            </form>
-        </header>
-        <nav>
-            <a href="/" title="Página incial"><i class="fa-solid fa-house fa-fw"></i><span>Início</span></a>
-            <a href="contatos.html" title="Faça contato conosto"><i class="fa-solid fa-comments fa-fw"></i><span>Contatos</span></a>
-            <a href="sobre.html" title="Sobre o site e o autor"><i class="fa-solid fa-circle-info fa-fw"></i><span>Sobre</span></a>
-            <a href="login.html" id="usuarioAcao" title="Logue-se no site" data-acao="login"><img src="img/anonimous.png" alt="Faça login" referrerpolicy="no-referrer"><span>Login</span></a>
-        </nav>
-        <main id="conteudo"></main>
-        <footer>
-            <a href="/" title="Ir para a página inicial."><i class="fa-solid fa-house fa-fw"></i></a>
-            <div>
-                ${site.licensa}
-                <div><a href="privacidade.html">Políticas de Privacidade</a></div>
-            </div>
-            <a href="#wrap" title="ir para o começo desta página."><i class="fa-solid fa-circle-up fa-fw"></i></a>
-        </footer>    
+    // Obtém a ação do botão do usuário do atributo `data-acao`.
+    const acao = _('#usuarioAcao').getAttribute('data-acao');
 
-    `;
+    // Seleciona a ação conforme `data-acao`
+    switch (acao) {
+        case 'login':
+            fbSigIn();
+            break;
+        case 'logout':
+            fbSignOut();
+            break;
+        case 'perfil':
+            location.href = 'perfil.html';
+            break;
+        default:
+            console.warn(`Ação desconhecida: ${acao}`);
+    }
+}
+
+/**
+ * Carrega um template HTML e insere seu conteúdo na página,
+ * realizando substituições dinâmicas com informações do site.
+ * @param {string} templateHTML - Caminho para o arquivo HTML do template.
+ */
+function template(templateHTML) {
+    fetch(templateHTML)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar o arquivo: ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(html => {
+            // Realiza substituições dinâmicas no template
+            let updatedHTML = html
+                .replace('{{site.logo}}', site.logo)
+                .replace('{{site.nome}}', site.nome)
+                .replace('{{site.licensa}}', site.licensa);
+
+            // Carrega o template HTML em div#wrap
+            _('#wrap').innerHTML = updatedHTML;
+
+            // Monitora cliques no botão do usuário
+            _('#usuarioAcao').addEventListener('click', usuarioAcao);
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        });
 }

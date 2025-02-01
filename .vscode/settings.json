@@ -1,4 +1,10 @@
 {
     "liveServer.settings.port": 5500,
-    "liveServer.settings.host": "localhost"
+    "liveServer.settings.host": "localhost",
+    "[html]": {
+        "editor.wordWrap": "off",
+        "editor.formatOnSave": true,
+        "html.format.wrapLineLength": 0,
+        "html.format.wrapAttributes": "auto"
+    }
 }
