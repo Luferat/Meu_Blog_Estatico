@@ -4,19 +4,26 @@
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
 
-        console.log(user);
+        // Se está logado
+
+        // console.log(user);
 
         // Título da página
         document.title = `${site.nome} - Perfil de ${user.displayName}`;
 
-        telefone = '';
-        verificado = 'Não';
+        // Preparando variáveis de exibição
+        let telefone = '';
+        let verificado = 'Não';
 
+        // Se tem número de telefone, exibe
         if (user.phoneNumber)
             telefone = `<li><strong>Telefone:</strong> ${user.phoneNumber}</li>`;
+
+        // Exibe se o e-mail é verificado ou não
         if (user.emailVerified)
             verificado = `Sim`;
 
+        // Montando o HTML de saída
         let out = `
         
 <h2>Olá ${user.displayName}!</h2>
