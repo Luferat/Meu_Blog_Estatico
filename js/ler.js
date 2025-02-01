@@ -4,8 +4,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const artigoId = urlParams.get('artigo');
 
-console.log(artigoId);
-
+// console.log(artigoId);
 
 // Solicita este artigo (pelo id) ao Firestore
 db.collection("artigos")
@@ -13,7 +12,7 @@ db.collection("artigos")
     .onSnapshot(async (doc) => {
         if (doc.exists) {
             // Se foi encontrado
-            console.log(doc.data())
+            // console.log(doc.data());
 
             // Extrai os dados do artigo
             let artigo = doc.data();
