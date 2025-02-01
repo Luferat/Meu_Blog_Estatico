@@ -17,6 +17,9 @@ db.collection("artigos")
             artigo['id'] = doc.id; // Extrai o ID
             const data = dataISOparaBR(artigo.data); // Converte a data para BR
 
+            // Título do documento
+            document.title = `${site.nome} - ${artigo.titulo}`;
+
             // Monta o HTML de saída
             let out = `
                 <h2>${artigo.titulo}</h2>
