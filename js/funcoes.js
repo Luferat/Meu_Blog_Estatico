@@ -148,7 +148,7 @@ function updateUser(user) {
             email: user.email,
             foto: user.photoURL,
             data: dataJStoISO(user.metadata.creationTime),
-            ultimoLogin: dataJStoISO(user.metadata.lastSignInTime),
+            ultimoLogin: dataJStoISO(user.metadata.lastSignInTime)
         });
 }
 
