@@ -26,7 +26,7 @@ if (window.history.replaceState) window.history.replaceState(null, null, window.
  **/
 window.onload = () => { // Isso é uma "arrow function"
 
-    template('_template.html');
+    template(_('base')[0].href + '_template.html');
 
     // Observa as mudanças de status do usuário
     firebase.auth().onAuthStateChanged((user) => {
