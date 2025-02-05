@@ -54,7 +54,7 @@ db.collection("artigos")
                     _('#formComentario').innerHTML = out;
                     // Monitora envio do formulário de comentário
                     if (_('#comentarioForm').length > 0)
-                        _('#comentarioForm').addEventListener('submit', enviaForm);
+                        _('#comentarioForm').addEventListener('submit', enviaFormComentario);
                 });
             }
 
@@ -64,13 +64,6 @@ db.collection("artigos")
             location.href = '404.html';
         }
     });
-
-/**
- * Fecha o modal (dialog) de feedback
- */
-function closeModal() {
-    _('#feedback').close();
-}
 
 /**
  * Obtém a lista de comentários para o artido
@@ -133,37 +126,44 @@ function montaForm(user, artigo) {
         <textarea name="txtComentario" id="txtComentario" placeholder="Comente aqui..."></textarea>
         <button type="submit">Enviar</button>
     </form>
-    <dialog id="feedback">
-        <div id="mensagem"></div>
-        <button onclick="closeModal()">Fechar</button>
-    </dialog>
     `;
 }
 
 /**
- * Processa o envio do formulário.
- * @param {Event} ev 
- * @returns 
+ * Processa o envio do formulário de comentário.
+ * @param {Event} ev - O evento de envio do formulário.
+ * @returns {boolean} - Retorna false se o comentário estiver vazio.
  */
-function enviaForm(ev) {
-    ev.preventDefault();
-    txtComentario = stripTags(this.txtComentario.value, site.tagsPermitidasComentario, true);
-    if (txtComentario == '') return false;
-    let form = {
-        artigo: this.artigo.value,
-        autor: this.autor.value,
-        comentario: txtComentario,
-        data: agoraISO(),
-        status: 'on'
-    }
+function enviaFormComentario(ev) {
+    ev.preventDefault(); // Previne o comportamento padrão do formulário.
+
+    // Remove tags não permitidas do comentário.
+    const txtComentario = stripTags(this.txtComentario.value, site.tagsPermitidasComentario, true);
+
+    // Verifica se o comentário está vazio após a remoção das tags.
+    if (txtComentario === '') return false;
+
+    // Cria um objeto com os dados do formulário.
+    const form = {
+        artigo: this.artigo.value, // ID do artigo relacionado ao comentário.
+        autor: this.autor.value, // Nome do autor do comentário.
+        comentario: txtComentario, // Conteúdo do comentário.
+        data: agoraISO(), // Data atual no formato ISO.
+        status: 'on' // Status do comentário.
+    };
+
+    // Reseta o formulário após a coleta dos dados.
     this.reset();
+
+    // Adiciona os dados do formulário à coleção 'comentarios' no Firestore.
     db.collection("comentarios").add(form)
         .then(() => {
-            _('#mensagem').innerHTML = `Comentário enviado com sucesso!`;
+            // Exibe uma mensagem de sucesso.
+            showDialog(`<p>Comentário enviado com sucesso!</p>`);
         })
         .catch((error) => {
-            _('#mensagem').innerHTML = `Falha ao enviar comentário. Tente mais tarde!`;
+            // Exibe uma mensagem de erro e loga o erro no console.
+            showDialog(`<p>Falha ao enviar comentário. Tente mais tarde!</p>`);
             console.error(error);
         });
-    _('#feedback').showModal();
 }

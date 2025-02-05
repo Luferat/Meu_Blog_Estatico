@@ -7,11 +7,19 @@
 
 /**
  * Inicializa o Firebase e as ferramentas Firestore e Auth
- */
+ **/
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
 const auth = firebaseApp.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
+
+window.db = db;
+window.auth = auth;
+
+/**
+ * Bloqueia o reenvio do formulário ao atualizar a página.
+ **/
+if (window.history.replaceState) window.history.replaceState(null, null, window.location.href);
 
 /**
  * Quando o documento está pronto, roda o JavaScript
@@ -78,8 +86,4 @@ window.onload = () => { // Isso é uma "arrow function"
          * mostra o ano de fundação.
          **/
         _('#footerAno').innerHTML = site.ano;
-
-
-
-
 }

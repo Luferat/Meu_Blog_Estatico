@@ -1,1 +1,44 @@
-/* Nada aqui por enquanto! */
+#form-contato {
+    display: block;
+    margin: auto;
+    width: 100%;
+    max-width: 500px;
+}
+
+#form-contato input,
+#form-contato textarea {
+    width: 100%;
+    padding: .5rem;
+    margin-top: .25rem;
+    border: 1px solid orangered;
+    border-radius: .3rem;
+    border-bottom: 3px solid orangered;
+    background-color: rgb(255, 236, 236);
+}
+
+#form-contato textarea {
+    height: 6rem;
+    resize: vertical;
+}
+
+#form-contato button {
+    padding: .5rem 1rem;
+    background-color: grey;
+    color: white;
+    border: none;
+    pointer-events: none;
+    border-radius: .3rem;
+}
+
+#form-contato input:valid,
+#form-contato textarea:valid {
+    border: 1px solid steelblue;
+    border-bottom: 3px solid steelblue;
+    background-color: rgb(232, 240, 254);
+}
+
+#form-contato:valid button {
+    background-color: steelblue;
+    pointer-events: all;
+    cursor: pointer;
+}
