@@ -86,6 +86,7 @@ header {
     background-color: var(--fundo-header);
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid #000;
 }
 
 header img {
@@ -204,7 +205,8 @@ footer>div {
     text-align: center;
 }
 
-footer>div div {
+footer small {
+    display: block;
     margin-top: .35rem;
 }
 
