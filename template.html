@@ -1,6 +1,6 @@
 <header>
   <div>
-    <a href="/"><img src="{{site.logo}}" alt="Logotipo do ${site.nome}" /></a>
+    <a href="index.html"><img src="{{site.logo}}" alt="Logotipo do ${site.nome}" /></a>
     <h1>{{site.nome}}</h1>
   </div>
   <form action="busca.html" method="get">
@@ -9,7 +9,7 @@
   </form>
 </header>
 <nav>
-  <a href="/" title="Página incial">
+  <a href="index.html" title="Página incial">
     <i class="fa-solid fa-house fa-fw"></i>
     <span>Início</span>
   </a>
@@ -28,18 +28,10 @@
 </nav>
 <main id="conteudo"></main>
 <footer>
-  <div>
-    <a href="/" title="Ir para a página inicial.">
-      <i class="fa-solid fa-house fa-fw"></i>
-    </a>
-  </div>
+  <a href="index.html" title="Ir para a página inicial."><i class="fa-solid fa-house fa-fw"></i></a>
   <div>
     {{site.licensa}}
-    <div>
-      <a href="privacidade.html">Políticas de Privacidade</a>
-    </div>
+    <small><a href="privacidade.html">Políticas de Privacidade</a></small>
   </div>
-  <a href="#wrap" title="ir para o começo desta página.">
-    <i class="fa-solid fa-circle-up fa-fw"></i>
-  </a>
+  <a href="#wrap" title="ir para o começo desta página."><i class="fa-solid fa-circle-up fa-fw"></i></a>
 </footer>
