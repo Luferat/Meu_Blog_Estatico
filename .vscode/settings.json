@@ -1,0 +1,10 @@
+{
+  "liveServer.settings.port": 5500,
+  "liveServer.settings.host": "localhost",
+  "prettier.printWidth": 120,
+  "prettier.htmlWhitespaceSensitivity": "ignore",
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "none",
+  "prettier.bracketSameLine": true,
+  "prettier.proseWrap": "never"
+}
